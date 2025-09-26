@@ -1,1 +1,1 @@
-# GOATUS-
+### GOATUSのプロトタイプ
