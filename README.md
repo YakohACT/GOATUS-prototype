@@ -6,5 +6,5 @@
 
 (同グループの方へ)
 編集権限を割り当てています,しかし設定はいじれないようになっているようなので,要望等がありましたらお申し付けください.
-実装したものはLINEに送ったURL,またはVSCode上で実行できます.
+実装したものはURL(https://yakohact.github.io/GOATUS-prototype/),またはVSCode上で実行できます.
 任意ですが,VSCodeとGitHubを連携させることをおすすめします.
