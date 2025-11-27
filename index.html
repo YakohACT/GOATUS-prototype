@@ -1,246 +1,120 @@
-/* テキトウも作成したやつダヨー */
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>My SNS</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #4267B2;
-      color: white;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 24px;
-    }
-    header button {
-      background: #365899;
-      border: none;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    header button:hover {
-      background: #2e4470;
-    }
-    main {
-      max-width: 600px;
-      margin: 20px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    .post {
-      border-bottom: 1px solid #ddd;
-      padding: 10px;
-      position: relative;
-    }
-    .post:last-child {
-      border-bottom: none;
-    }
-    .post-author {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .post-text {
-      margin-bottom: 35px; /* 削除ボタンと距離を確保 */
-    }
-    .new-post {
-      display: flex;
-      margin-bottom: 20px;
-    }
-    .new-post input {
-      flex: 1;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      margin-right: 10px;
-    }
-    .new-post button {
-      padding: 8px 15px;
-      border: none;
-      border-radius: 4px;
-      background: #4267B2;
-      color: white;
-      cursor: pointer;
-    }
-    .new-post button:hover {
-      background: #365899;
-    }
-    .like-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 18px;
-      color: #888;
-      user-select: none;
-    }
-    .like-btn.liked {
-      color: red;
-      cursor: default;
-    }
-    .delete-btn {
-      position: absolute;
-      bottom: 10px;      /* 本文と距離確保 */
-      left: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #888;
-      background: #f9f9f9;
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
-    .delete-btn:hover {
-      color: #f00;
-    }
-    .like-count {
-      font-size: 14px;
-      color: #555;
-      margin-left: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOATUS Prototype</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  My SNS
-  <button onclick="changeUsername()">⚙️ 設定</button>
-</header>
+    <div id="view-find" class="view-container hidden">
+        <header class="app-header header-find">
+            <div class="top-bar">
+                <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="search-box" id="trigger-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="キーワード検索" readonly> 
+                    </div>
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+            </div>
+            <div class="sub-header">
+                <i class="fa-solid fa-bolt"></i>
+                <span>急上昇アスリート</span>
+            </div>
+        </header>
 
-<main>
-  <div class="new-post">
-    <input type="text" id="postInput" placeholder="何か投稿してみよう…">
-    <button onclick="addPost()">投稿</button>
-  </div>
-  <div id="posts"></div>
-</main>
+        <main class="content-area main-find">
+            <section class="card-container">
+                <div class="grey-box account-box"><span class="placeholder-text">アカウント</span></div>
+            </section>
+            <section class="ad-container">
+                <div class="grey-box ad-box"><span class="placeholder-text">広告</span></div>
+            </section>
+            <div class="section-title"><span>新着アスリート</span></div>
+            <section class="card-container">
+                <div class="grey-box account-box"><span class="placeholder-text">アカウント</span></div>
+            </section>
+            <div style="height: 50px;"></div>
+        </main>
+    </div>
 
-<script>
-  let username = localStorage.getItem('snsUsername') || '匿名ユーザー';
-  let likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]'); // いいね済み投稿ID
+    <div id="view-field" class="view-container">
+        <header class="app-header header-field">
+            <div class="header-inner">
+                <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="logo-container">
+                    <i class="fa-solid fa-dragon"></i>
+                    <span class="logo-text">GOATUS</span>
+                </div>
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+            </div>
+        </header>
+        <main class="content-area main-field">
+            <div class="content-wrapper">
+                <h1 class="display-text">投稿＋クラファン</h1>
+            </div>
+        </main>
+    </div>
 
-  window.onload = function() {
-    const savedPosts = JSON.parse(localStorage.getItem('snsPosts') || '[]');
-    savedPosts.forEach(post => renderPost(post));
-  };
+    <div id="view-category" class="view-container hidden">
+        <header class="app-header header-category">
+            <button class="icon-btn" id="back-to-find">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="search-box active-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="キーワード検索" autofocus>
+            </div>
+        </header>
 
-  function addPost() {
-    const input = document.getElementById('postInput');
-    const text = input.value.trim();
-    if (!text) return;
+        <main class="content-area main-category">
+            <h2 class="category-title">競技カテゴリ</h2>
 
-    const post = {
-      id: Date.now(),
-      author: username,
-      text: text,
-      timestamp: new Date().toISOString(),
-      likes: 0
-    };
+            <div class="category-list">
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-a-o">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ア〜オ</span>
+                    </button>
+                    <div id="list-a-o" class="sub-list hidden">
+                        <div class="sub-item">合気道</div>
+                        <div class="sub-item">アイスホッケー</div>
+                        <div class="sub-item">アーチェリー</div>
+                        <div class="sub-item">アメリカンフットボール</div>
+                    </div>
+                </div>
 
-    const savedPosts = JSON.parse(localStorage.getItem('snsPosts') || '[]');
-    savedPosts.unshift(post);
-    localStorage.setItem('snsPosts', JSON.stringify(savedPosts));
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>カ〜コ</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>サ〜ソ</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>タ〜ト</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ナ〜ノ</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ハ〜ホ</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>マ〜モ</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ヤ〜ヨ</span></button>
+                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ワ〜ン</span></button>
+            </div>
+        </main>
+    </div>
 
-    renderPost(post, true);
-    input.value = '';
-  }
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" id="nav-field">
+            <i class="fa-solid fa-landmark"></i><span>フィールド</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-find">
+            <i class="fa-regular fa-compass"></i><span>みつける</span>
+        </a>
+        <div class="post-button-container">
+            <button class="post-btn">
+                <i class="fa-solid fa-plus"></i><span class="post-label">投稿</span>
+            </button>
+        </div>
+        <a href="#" class="nav-item"><i class="fa-regular fa-handshake"></i><span>コミュニティ</span></a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-person-running"></i><span>イベント</span></a>
+        <a href="#" class="nav-item"><i class="fa-regular fa-user"></i><span>マイページ</span></a>
+    </nav>
 
-  function renderPost(post, prepend = false) {
-    const postsDiv = document.getElementById('posts');
-
-    const postDiv = document.createElement('div');
-    postDiv.className = 'post';
-    postDiv.setAttribute('data-id', post.id);
-
-    const authorDiv = document.createElement('div');
-    authorDiv.className = 'post-author';
-    authorDiv.textContent = post.author;
-
-    const textDiv = document.createElement('div');
-    textDiv.className = 'post-text';
-    textDiv.textContent = post.text;
-
-    // いいねボタン
-    const likeBtn = document.createElement('span');
-    likeBtn.className = 'like-btn';
-    likeBtn.innerHTML = '❤️';
-    const likeCount = document.createElement('span');
-    likeCount.className = 'like-count';
-    likeCount.textContent = post.likes;
-    likeBtn.appendChild(likeCount);
-
-    if (likedPosts.includes(post.id)) {
-      likeBtn.classList.add('liked');
-    } else {
-      likeBtn.onclick = () => toggleLike(post.id, likeBtn, likeCount);
-    }
-
-    // 削除ボタン
-    const deleteBtn = document.createElement('span');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.textContent = '🗑️ 削除';
-    deleteBtn.onclick = () => deletePost(post.id, postDiv);
-
-    postDiv.appendChild(authorDiv);
-    postDiv.appendChild(textDiv);
-    postDiv.appendChild(likeBtn);
-    postDiv.appendChild(deleteBtn);
-
-    if (prepend) {
-      postsDiv.insertBefore(postDiv, postsDiv.firstChild);
-    } else {
-      postsDiv.appendChild(postDiv);
-    }
-  }
-
-  function toggleLike(id, likeBtn, likeCount) {
-    if (likedPosts.includes(id)) return; // すでにいいね済みなら何もしない
-
-    const savedPosts = JSON.parse(localStorage.getItem('snsPosts') || '[]');
-    const post = savedPosts.find(p => p.id === id);
-    if (!post) return;
-
-    post.likes += 1;
-    localStorage.setItem('snsPosts', JSON.stringify(savedPosts));
-
-    likeCount.textContent = post.likes;
-    likeBtn.classList.add('liked');
-
-    likedPosts.push(id);
-    localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
-  }
-
-  function deletePost(id, postDiv) {
-    let savedPosts = JSON.parse(localStorage.getItem('snsPosts') || '[]');
-    savedPosts = savedPosts.filter(p => p.id !== id);
-    localStorage.setItem('snsPosts', JSON.stringify(savedPosts));
-
-    // 削除された投稿が likedPosts にあれば除外
-    likedPosts = likedPosts.filter(likeId => likeId !== id);
-    localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
-
-    postDiv.remove();
-  }
-
-  function changeUsername() {
-    const newName = prompt('アカウント名を入力してください', username);
-    if (newName && newName.trim() !== '') {
-      username = newName.trim();
-      localStorage.setItem('snsUsername', username);
-      alert('アカウント名を ' + username + ' に変更しました');
-    }
-  }
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
