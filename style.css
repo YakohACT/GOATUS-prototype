@@ -1,0 +1,113 @@
+/* --- 基本リセット --- */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: "Helvetica Neue", Arial, sans-serif; }
+:root { --bg-dark: #1a1e2e; --text-white: #ffffff; --bg-grey: #e0e0e0; --accent-yellow: #f2c94c; --nav-height: 80px; }
+body { background-color: #f5f5f5; color: #333; min-height: 100vh; }
+.hidden { display: none !important; }
+
+/* --- ヘッダー共通 --- */
+.app-header { position: fixed; top: 0; left: 0; width: 100%; background-color: var(--bg-dark); color: var(--text-white); z-index: 1000; }
+.icon-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+
+/* --- View 1: みつける --- */
+.header-find { height: 100px; padding-bottom: 10px; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
+.search-box { flex-grow: 1; margin: 0 15px; background-color: rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 5px 15px; display: flex; align-items: center; }
+.search-box input { background: none; border: none; color: white; width: 100%; outline: none; }
+.search-box input::placeholder { color: #ccc; }
+.search-box i { color: #ccc; margin-right: 8px; }
+.sub-header { padding: 5px 15px; display: flex; align-items: center; font-weight: bold; }
+.sub-header i { margin-right: 8px; }
+.main-find { padding-top: 100px; padding-bottom: var(--nav-height); }
+
+/* --- View 2: フィールド --- */
+.header-field { height: 60px; display: flex; align-items: center; padding: 0 15px; }
+.header-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; position: relative; }
+.logo-container { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; font-weight: 900; font-size: 1.3rem; letter-spacing: 1px; }
+.logo-container i { margin-right: 8px; }
+.main-field { padding-top: 60px; padding-bottom: var(--nav-height); height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--bg-grey); }
+.content-wrapper { text-align: center; }
+.display-text { font-size: 2.5rem; color: #000; line-height: 1.4; }
+
+/* --- View 3: カテゴリ検索 (新規スタイル) --- */
+#view-category {
+    background-color: #000; /* 全体背景黒 */
+    min-height: 100vh;
+    color: white;
+}
+.header-category {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background-color: #000; /* ヘッダーも黒 */
+    /* 画像のように少し透過させる場合は以下 */
+    /* background-color: rgba(30,30,30, 0.9); */
+}
+.active-search {
+    flex-grow: 1;
+    margin-left: 10px;
+    background-color: #444; /* 少し明るいグレー */
+}
+.main-category {
+    padding-top: 60px;
+    padding-bottom: var(--nav-height);
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.category-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+/* カテゴリリスト */
+.cat-btn {
+    width: 100%;
+    background-color: #4f4f4f; /* ボタン背景グレー */
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    margin-bottom: 2px;
+    text-align: center;
+    font-size: 1.2rem;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center; /* テキスト中央寄せ */
+    align-items: center;
+}
+.cat-btn i {
+    position: absolute;
+    left: 15px; /* アイコンは左固定 */
+    font-size: 0.9rem;
+}
+/* サブリスト (ア〜オの中身) */
+.sub-list {
+    width: 100%;
+}
+.sub-item {
+    background-color: #4f4f4f; /* 親と同じか少し変える */
+    color: white;
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 1.2rem;
+    border-top: 1px solid #333; /* 区切り線 */
+}
+
+/* 共通パーツ */
+.grey-box { background-color: var(--bg-grey); display: flex; justify-content: center; align-items: center; width: 100%; color: #000; font-size: 2rem; position: relative; overflow: hidden; }
+.account-box { height: 250px; }
+.ad-box { height: 150px; }
+.ad-container { border-top: 2px solid #333; }
+.section-title { background-color: #0f111a; color: white; padding: 10px 15px; font-weight: bold; }
+.placeholder-text { font-size: 1.5rem; }
+
+/* ナビゲーション */
+.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); background-color: var(--bg-dark); display: flex; justify-content: space-around; align-items: flex-start; padding-top: 10px; z-index: 2000; }
+.nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #888; font-size: 0.65rem; width: 16%; }
+.nav-item i { font-size: 1.3rem; margin-bottom: 5px; }
+.nav-item.active { color: white; }
+.post-button-container { width: 16%; display: flex; justify-content: center; position: relative; top: -20px; }
+.post-btn { background-color: var(--accent-yellow); border: none; border-radius: 50%; width: 55px; height: 55px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer; }
+.post-btn i { font-size: 1.5rem; color: #333; }
+.post-label { position: absolute; bottom: -20px; font-size: 0.6rem; color: #888; white-space: nowrap; }
