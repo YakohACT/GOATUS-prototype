@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+./logo.png<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -15,8 +15,8 @@
                 <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="search-box" id="trigger-search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="キーワード検索" readonly> 
-                    </div>
+                    <input type="text" placeholder="キーワード検索" readonly>
+                </div>
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
             </div>
             <div class="sub-header">
@@ -45,7 +45,7 @@
             <div class="header-inner">
                 <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="logo-container">
-                    <i class="logo.png"></i>
+                    <i class="./logo.png"></i>
                     <span class="logo-text">GOATUS</span>
                 </div>
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
@@ -71,7 +71,6 @@
 
         <main class="content-area main-category">
             <h2 class="category-title">競技カテゴリ</h2>
-
             <div class="category-list">
                 <div class="cat-item-wrapper">
                     <button class="cat-btn" id="btn-a-o">
@@ -85,7 +84,6 @@
                         <div class="sub-item">アメリカンフットボール</div>
                     </div>
                 </div>
-
                 <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>カ〜コ</span></button>
                 <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>サ〜ソ</span></button>
                 <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>タ〜ト</span></button>
@@ -96,6 +94,22 @@
                 <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ワ〜ン</span></button>
             </div>
         </main>
+    </div>
+
+    <div id="view-event" class="view-container hidden">
+        <header class="app-header header-field">
+            <div class="header-inner">
+                <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="logo-container">
+                    <i class="./logo.png"></i>
+                    <span class="logo-text">GOATUS</span>
+                </div>
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+            </div>
+        </header>
+        
+        <main class="content-area main-event">
+            </main>
     </div>
 
     <nav class="bottom-nav">
@@ -111,7 +125,11 @@
             </button>
         </div>
         <a href="#" class="nav-item"><i class="fa-regular fa-handshake"></i><span>コミュニティ</span></a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-person-running"></i><span>イベント</span></a>
+        
+        <a href="#" class="nav-item" id="nav-event">
+            <i class="fa-solid fa-person-running"></i><span>イベント</span>
+        </a>
+        
         <a href="#" class="nav-item"><i class="fa-regular fa-user"></i><span>マイページ</span></a>
     </nav>
 
