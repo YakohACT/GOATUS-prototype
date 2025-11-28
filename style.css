@@ -19,80 +19,36 @@ body { background-color: #f5f5f5; color: #333; min-height: 100vh; }
 .sub-header i { margin-right: 8px; }
 .main-find { padding-top: 100px; padding-bottom: var(--nav-height); }
 
-/* --- View 2: フィールド --- */
+/* --- View 2 & 4: フィールド / イベント ヘッダー --- */
 .header-field { height: 60px; display: flex; align-items: center; padding: 0 15px; }
 .header-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; position: relative; }
 .logo-container { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; font-weight: 900; font-size: 1.3rem; letter-spacing: 1px; }
 .logo-container i { margin-right: 8px; }
+
+/* フィールド メイン */
 .main-field { padding-top: 60px; padding-bottom: var(--nav-height); height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--bg-grey); }
 .content-wrapper { text-align: center; }
 .display-text { font-size: 2.5rem; color: #000; line-height: 1.4; }
 
-/* --- View 3: カテゴリ検索 (新規スタイル) --- */
-#view-category {
-    background-color: #000; /* 全体背景黒 */
-    min-height: 100vh;
-    color: white;
-}
-.header-category {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    background-color: #000; /* ヘッダーも黒 */
-    /* 画像のように少し透過させる場合は以下 */
-    /* background-color: rgba(30,30,30, 0.9); */
-}
-.active-search {
-    flex-grow: 1;
-    margin-left: 10px;
-    background-color: #444; /* 少し明るいグレー */
-}
-.main-category {
+/* --- View 3: カテゴリ検索 --- */
+#view-category { background-color: #000; min-height: 100vh; color: white; }
+.header-category { height: 60px; display: flex; align-items: center; padding: 0 10px; background-color: #000; }
+.active-search { flex-grow: 1; margin-left: 10px; background-color: #444; }
+.main-category { padding-top: 60px; padding-bottom: var(--nav-height); padding-left: 15px; padding-right: 15px; }
+.category-title { font-size: 1rem; font-weight: bold; margin: 15px 0; }
+.cat-btn { width: 100%; background-color: #4f4f4f; color: white; border: none; padding: 12px 15px; margin-bottom: 2px; text-align: center; font-size: 1.2rem; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+.cat-btn i { position: absolute; left: 15px; font-size: 0.9rem; }
+.sub-list { width: 100%; }
+.sub-item { background-color: #4f4f4f; color: white; padding: 12px 15px; text-align: center; font-size: 1.2rem; border-top: 1px solid #333; }
+
+/* --- View 4: イベント --- */
+.main-event {
     padding-top: 60px;
     padding-bottom: var(--nav-height);
-    padding-left: 15px;
-    padding-right: 15px;
-}
-.category-title {
-    font-size: 1rem;
-    font-weight: bold;
-    margin: 15px 0;
+    min-height: 100vh;
+    background-color: var(--bg-dark); /* 画像のような暗い紺色背景 */
 }
 
-/* カテゴリリスト */
-.cat-btn {
-    width: 100%;
-    background-color: #4f4f4f; /* ボタン背景グレー */
-    color: white;
-    border: none;
-    padding: 12px 15px;
-    margin-bottom: 2px;
-    text-align: center;
-    font-size: 1.2rem;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    justify-content: center; /* テキスト中央寄せ */
-    align-items: center;
-}
-.cat-btn i {
-    position: absolute;
-    left: 15px; /* アイコンは左固定 */
-    font-size: 0.9rem;
-}
-/* サブリスト (ア〜オの中身) */
-.sub-list {
-    width: 100%;
-}
-.sub-item {
-    background-color: #4f4f4f; /* 親と同じか少し変える */
-    color: white;
-    padding: 12px 15px;
-    text-align: center;
-    font-size: 1.2rem;
-    border-top: 1px solid #333; /* 区切り線 */
-}
 
 /* 共通パーツ */
 .grey-box { background-color: var(--bg-grey); display: flex; justify-content: center; align-items: center; width: 100%; color: #000; font-size: 2rem; position: relative; overflow: hidden; }
