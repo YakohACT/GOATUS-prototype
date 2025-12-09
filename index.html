@@ -1,4 +1,4 @@
-./logo.png<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -45,16 +45,44 @@
             <div class="header-inner">
                 <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="logo-container">
-                    <i class="./logo.png"></i>
+                    <img src="logo.png" width="40">
                     <span class="logo-text">GOATUS</span>
                 </div>
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
             </div>
         </header>
+
         <main class="content-area main-field">
-            <div class="content-wrapper">
-                <h1 class="display-text">投稿＋クラファン</h1>
+            <div class="post-card">
+                <div class="post-header-row">
+                    <div class="user-profile">
+                        <div class="avatar-circle"></div>
+                        <div class="user-info">
+                            <div class="user-name">団体名<br>個人名</div>
+                            <div class="post-date">n日前</div>
+                        </div>
+                    </div>
+                    <button class="follow-btn">フォロー</button>
+                </div>
+
+                <div class="post-image-area">
+                    <span>画像</span>
+                </div>
+
+                <div class="post-text-area">
+                    <p>文章</p>
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-pill">
+                        <i class="fa-regular fa-thumbs-up"></i> 0
+                    </button>
+                    <button class="action-pill">
+                        <i class="fa-solid fa-bullhorn"></i> 0
+                    </button>
+                </div>
             </div>
+            <div class="post-divider"></div>
         </main>
     </div>
 
@@ -101,7 +129,7 @@
             <div class="header-inner">
                 <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="logo-container">
-                    <i class="./logo.png"></i>
+                    <img src="logo.png" width="40">
                     <span class="logo-text">GOATUS</span>
                 </div>
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
@@ -125,11 +153,9 @@
             </button>
         </div>
         <a href="#" class="nav-item"><i class="fa-regular fa-handshake"></i><span>コミュニティ</span></a>
-        
         <a href="#" class="nav-item" id="nav-event">
             <i class="fa-solid fa-person-running"></i><span>イベント</span>
         </a>
-        
         <a href="#" class="nav-item"><i class="fa-regular fa-user"></i><span>マイページ</span></a>
     </nav>
 
