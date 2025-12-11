@@ -41,14 +41,20 @@
     </div>
 
     <div id="view-field" class="view-container">
-        <header class="app-header header-field">
-            <div class="header-inner">
+        <header class="app-header header-field-tabs">
+            <div class="top-row">
                 <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="logo-container">
                     <img src="logo.png" width="40">
                     <span class="logo-text">GOATUS</span>
                 </div>
-                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <button class="icon-btn notification-wrapper">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+            </div>
+            <div class="tab-row">
+                <div class="tab-item active" id="tab-recommend">おすすめ</div>
+                <div class="tab-item" id="tab-following">フォロー中</div>
             </div>
         </header>
 
@@ -107,40 +113,260 @@
                     </button>
                     <div id="list-a-o" class="sub-list hidden">
                         <div class="sub-item">合気道</div>
-                        <div class="sub-item">アイスホッケー</div>
-                        <div class="sub-item">アーチェリー</div>
                         <div class="sub-item">アメリカンフットボール</div>
+                        <div class="sub-item">アーチェリー</div>
+                        <div class="sub-item">駅伝</div>
+                        <div class="sub-item">eスポーツ</div>
+                        <div class="sub-item">応援</div>
                     </div>
                 </div>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>カ〜コ</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>サ〜ソ</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>タ〜ト</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ナ〜ノ</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ハ〜ホ</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>マ〜モ</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ヤ〜ヨ</span></button>
-                <button class="cat-btn"><i class="fa-solid fa-chevron-down"></i><span>ワ〜ン</span></button>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ka-ko">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>カ〜コ</span>
+                    </button>
+                    <div id="list-ka-ko" class="sub-list hidden">
+                        <div class="sub-item">空手</div>
+                        <div class="sub-item">ゴルフ</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-sa-so">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>サ〜ソ</span>
+                    </button>
+                    <div id="list-sa-so" class="sub-list hidden">
+                        <div class="sub-item">サッカー</div>
+                        <div class="sub-item">サーフィン</div>
+                        <div class="sub-item">自動車トラックレース</div>
+                        <div class="sub-item">柔道</div>
+                        <div class="sub-item">水泳</div>
+                        <div class="sub-item">吹奏楽</div>
+                        <div class="sub-item">スカイダイビング</div>
+                        <div class="sub-item">スノーボード</div>
+                        <div class="sub-item">相撲</div>
+                        <div class="sub-item">セーリング</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ta-to">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>タ〜ト</span>
+                    </button>
+                    <div id="list-ta-to" class="sub-list hidden">
+                        <div class="sub-item">卓球</div>
+                        <div class="sub-item">ダーツ</div>
+                        <div class="sub-item">テニス</div>
+                        <div class="sub-item">トライアスロン</div>
+                        <div class="sub-item">トラック競技</div>
+                        <div class="sub-item">トレイルランニング</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-na-no">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ナ〜ノ</span>
+                    </button>
+                    <div id="list-na-no" class="sub-list hidden">
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ha-ho">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ハ〜ホ</span>
+                    </button>
+                    <div id="list-ha-ho" class="sub-list hidden">
+                        <div class="sub-item">バスケットボール</div>
+                        <div class="sub-item">バレーボール</div>
+                        <div class="sub-item">ハンドボール</div>
+                        <div class="sub-item">フィギュアスケート</div>
+                        <div class="sub-item">フィールド競技</div>
+                        <div class="sub-item">フットサル</div>
+                        <div class="sub-item">ブラインドマラソン</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ma-mo">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>マ〜モ</span>
+                    </button>
+                    <div id="list-ma-mo" class="sub-list hidden">
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ya-yo">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ヤ〜ヨ</span>
+                    </button>
+                    <div id="list-ya-yo" class="sub-list hidden">
+                        <div class="sub-item">野球</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ra-ro">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ラ〜ロ</span>
+                    </button>
+                    <div id="list-ra-ro" class="sub-list hidden">
+                        <div class="sub-item">ロード競技</div>
+                        <div class="sub-item">ロードレース</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-wa-n">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ワ〜ン</span>
+                    </button>
+                    <div id="list-wa-n" class="sub-list hidden">
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
     <div id="view-event" class="view-container hidden">
-        <header class="app-header header-field">
-            <div class="header-inner">
+        <header class="app-header header-field-tabs">
+            <div class="top-row">
                 <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
                 <div class="logo-container">
                     <img src="logo.png" width="40">
                     <span class="logo-text">GOATUS</span>
                 </div>
-                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <button class="icon-btn notification-wrapper">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+            </div>
+            <div class="tab-row">
+                <div class="tab-item active" id="tab-event-recommend">おすすめ</div>
+                <div class="tab-item" id="tab-event-following">フォロー中</div>
             </div>
         </header>
         
         <main class="content-area main-event">
-            </main>
+            <div class="event-card">
+                <div class="event-image-area">
+                    <span>画像</span>
+                </div>
+                
+                <div id="trigger-event-detail" class="clickable-area">
+                    <h3 class="event-title">イベント名</h3>
+                    
+                    <div class="progress-section">
+                        <div class="progress-label">50%</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-footer">
+                        <div class="event-stats">
+                            <div class="stat-item">支援者数<br><span>n人</span></div>
+                            <div class="stat-item">残り<br><span>n日</span></div>
+                        </div>
+                        <span class="event-detail-link">イベント詳細 >></span>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <nav class="bottom-nav">
+    <div id="view-event-detail" class="view-container hidden">
+        <header class="app-header header-detail">
+            <button class="icon-btn" id="btn-back-from-detail">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <span class="header-title">イベント</span>
+            <div style="width: 30px;"></div>
+        </header>
+
+        <main class="content-area main-detail">
+            <div class="detail-profile-row">
+                <div class="avatar-circle large"></div>
+                <div class="user-info">
+                    <div class="user-name">団体名<br>個人名</div>
+                </div>
+            </div>
+
+            <div class="event-image-area">
+                <span>画像</span>
+            </div>
+
+            <h2 class="detail-event-title">イベント名</h2>
+            <div class="detail-money-row">
+                <div class="current-amount-label">支援総額</div>
+                <div class="amount-wrap">
+                    <span class="current-amount">50,000円</span>
+                    <span class="target-amount">目標金額 75,000円</span>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-label">50%</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 50%;"></div>
+                </div>
+            </div>
+
+            <div class="detail-stats-row">
+                <div class="detail-stat-item">支援者<br><span>n人</span></div>
+                <div class="detail-stat-item">残り<br><span>n日</span></div>
+            </div>
+
+            <div class="support-action-area">
+                <button class="support-btn" id="btn-support-event">
+                    イベントを支援する <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <p class="support-note">
+                    実行者は目標金額達成時のみ、支援金を受け取れます。<br>
+                    期日内に目標金額に到達しない場合、支援金は返金されます。
+                </p>
+            </div>
+
+            <div class="detail-description">
+                <h3>イベントの詳細内容</h3>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-plan-select" class="view-container hidden">
+        <header class="app-header header-detail">
+            <button class="icon-btn" id="btn-back-from-plan">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <span class="header-title">イベント</span>
+            <div style="width: 30px;"></div>
+        </header>
+
+        <main class="content-area main-plan-select">
+            <p class="plan-select-instruction">プランを選択してください</p>
+
+            <div class="plan-card">
+                <div class="plan-image-area">
+                    <span>画像</span>
+                </div>
+                <div class="plan-info">
+                    <h3 class="plan-name">プラン名1</h3>
+                    <p class="plan-detail-text">プラン名1詳細</p>
+                </div>
+                <button class="payment-btn">お支払いへ進む</button>
+            </div>
+
+            <div class="plan-card">
+                <div class="plan-image-area">
+                    <span>画像</span>
+                </div>
+                <div class="plan-info">
+                    <h3 class="plan-name">プラン名2</h3>
+                    <p class="plan-detail-text">プラン名2詳細</p>
+                </div>
+                <button class="payment-btn">お支払いへ進む</button>
+            </div>
+            
+            <div style="height: 30px;"></div>
+        </main>
+    </div>
+
+    <nav class="bottom-nav" id="main-nav">
         <a href="#" class="nav-item active" id="nav-field">
             <i class="fa-solid fa-landmark"></i><span>フィールド</span>
         </a>
