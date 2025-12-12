@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOATUS Prototype</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="view-find" class="view-container hidden">
+        <header class="app-header header-find">
+            <div class="top-bar">
+                <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="search-box" id="trigger-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="キーワード検索" readonly>
+                </div>
+                <button class="icon-btn notification-wrapper">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge">1</span>
+                </button>
+            </div>
+            <div class="sub-header">
+                <i class="fa-solid fa-bolt"></i>
+                <span>急上昇アスリート</span>
+            </div>
+        </header>
+
+        <main class="content-area main-find">
+            <section class="card-container">
+                <div class="grey-box account-box"><span class="placeholder-text">アカウント</span></div>
+            </section>
+            <section class="ad-container">
+                <div class="grey-box ad-box"><span class="placeholder-text">広告</span></div>
+            </section>
+            <div class="section-title"><span>新着アスリート</span></div>
+            <section class="card-container">
+                <div class="grey-box account-box"><span class="placeholder-text">アカウント</span></div>
+            </section>
+            <div style="height: 50px;"></div>
+        </main>
+    </div>
+
+    <div id="view-field" class="view-container">
+        <header class="app-header header-field-tabs">
+            <div class="top-row">
+                <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="logo-container">
+                    <img src="logo.png" width="40" alt="GOATUS Logo">
+                    <span class="logo-text">GOATUS</span>
+                </div>
+                <button class="icon-btn notification-wrapper">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+            </div>
+            <div class="tab-row">
+                <div class="tab-item active" id="tab-recommend">おすすめ</div>
+                <div class="tab-item" id="tab-following">フォロー中</div>
+            </div>
+        </header>
+
+        <main class="content-area main-field">
+            
+            <div id="dynamicPostContainer">
+                </div>
+            
+            <div class="post-card" data-post-id="static-1">
+                <div class="post-header-row">
+                    <div class="user-profile">
+                        <div class="avatar-circle"></div>
+                        <div class="user-info">
+                            <div class="user-name">団体名<br>個人名</div>
+                            <div class="post-date">n日前</div>
+                        </div>
+                    </div>
+                    <button class="icon-btn post-menu-btn" data-post-id="static-1">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                </div>
+
+                <div class="post-image-area">
+                    <span>画像</span>
+                </div>
+
+                <div class="post-text-area">
+                    <p>文章</p>
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-pill like-btn" data-post-id="static-1">
+                        <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">0</span>
+                    </button>
+                    <button class="action-pill cheer-btn" data-post-id="static-1">
+                        <i class="fa-solid fa-bullhorn"></i> <span class="cheer-count">0</span>
+                    </button>
+                </div>
+            </div>
+            <div class="post-divider"></div>
+            <div style="height: 50px;"></div>
+        </main>
+    </div>
+
+    <div id="view-category" class="view-container hidden">
+        <header class="app-header header-category">
+            <button class="icon-btn" id="back-to-find">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="search-box active-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="キーワード検索" autofocus>
+            </div>
+        </header>
+
+        <main class="content-area main-category">
+            <h2 class="category-title">競技カテゴリ</h2>
+            <div class="category-list">
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-a-o">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>ア〜オ</span>
+                    </button>
+                    <div id="list-a-o" class="sub-list hidden">
+                        <div class="sub-item">合気道</div>
+                        <div class="sub-item">アメリカンフットボール</div>
+                        <div class="sub-item">アーチェリー</div>
+                        <div class="sub-item">駅伝</div>
+                        <div class="sub-item">eスポーツ</div>
+                        <div class="sub-item">応援</div>
+                    </div>
+                </div>
+                <div class="cat-item-wrapper">
+                    <button class="cat-btn" id="btn-ka-ko">
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                        <span>カ〜コ</span>
+                    </button>
+                    <div id="list-ka-ko" class="sub-list hidden">
+                        <div class="sub-item">空手</div>
+                        <div class="sub-item">ゴルフ</div>
+                    </div>
+                </div>
+                </div>
+        </main>
+    </div>
+
+    <div id="view-event" class="view-container hidden">
+        <header class="app-header header-field-tabs">
+            <div class="top-row">
+                <button class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="logo-container">
+                    <img src="logo.png" width="40" alt="GOATUS Logo">
+                    <span class="logo-text">GOATUS</span>
+                </div>
+                <button class="icon-btn notification-wrapper">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+            </div>
+            <div class="tab-row">
+                <div class="tab-item active" id="tab-event-recommend">おすすめ</div>
+                <div class="tab-item" id="tab-event-following">フォロー中</div>
+            </div>
+        </header>
+        
+        <main class="content-area main-event">
+            <div class="event-card">
+                <div class="event-image-area">
+                    <span>画像</span>
+                </div>
+                
+                <div id="trigger-event-detail" class="clickable-area">
+                    <h3 class="event-title">イベント名</h3>
+                    
+                    <div class="progress-section">
+                        <div class="progress-label">50%</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-footer">
+                        <div class="event-stats">
+                            <div class="stat-item">支援者数<br><span>n人</span></div>
+                            <div class="stat-item">残り<br><span>n日</span></div>
+                        </div>
+                        <span class="event-detail-link">イベント詳細 >></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-event-detail" class="view-container hidden">
+        <header class="app-header header-detail">
+            <button class="icon-btn" id="btn-back-from-detail">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <span class="header-title">イベント</span>
+            <div style="width: 30px;"></div>
+        </header>
+
+        <main class="content-area main-detail">
+            <div class="detail-profile-row">
+                <div class="avatar-circle large"></div>
+                <div class="user-info">
+                    <div class="user-name">団体名<br>個人名</div>
+                </div>
+            </div>
+
+            <div class="event-image-area">
+                <span>画像</span>
+            </div>
+
+            <h2 class="detail-event-title">イベント名</h2>
+            
+            <div class="amount-wrap">
+                <span class="current-amount">50,000円</span>
+                <span class="target-amount">目標金額 75,000円</span>
+            </div>
+            
+            <div class="current-amount-label">支援総額</div>
+
+            <div class="progress-section">
+                <div class="progress-bar-container" style="height: 10px;">
+                    <div class="progress-bar-fill" style="width: 50%; height: 10px; border-radius: 5px;"></div>
+                </div>
+            </div>
+            
+            <div class="detail-stats-row">
+                <div class="detail-stat-item">支援者<br><span>n人</span></div>
+                <div class="detail-stat-item">残り<br><span>n日</span></div>
+            </div>
+
+            <div class="support-action-area">
+                <button class="support-btn" id="btn-support-event">
+                    イベントを支援する <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <p class="support-note">
+                    実行者は目標金額達成時のみ、支援金を受け取れます。<br>
+                    期日内に目標金額に到達しない場合、支援金は返金されます。
+                </p>
+            </div>
+
+            <div class="detail-description">
+                イベントの詳細内容
+            </div>
+        </main>
+    </div>
+
+    <div id="view-plan-select" class="view-container hidden">
+        <header class="app-header header-detail">
+            <button class="icon-btn" id="btn-back-from-plan">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <span class="header-title">イベント</span>
+            <div style="width: 30px;"></div>
+        </header>
+
+        <main class="content-area main-plan-select">
+            <p class="plan-select-instruction">プランを選択してください</p>
+
+            <div class="plan-card">
+                <div class="plan-image-area">
+                    <span>画像</span>
+                </div>
+                <div class="plan-info">
+                    <h3 class="plan-name">プラン名1</h3>
+                    <p class="plan-detail-text">プラン名1詳細</p>
+                </div>
+                <button class="payment-btn">お支払いへ進む</button>
+            </div>
+
+            <div class="plan-card">
+                <div class="plan-image-area">
+                    <span>画像</span>
+                </div>
+                <div class="plan-info">
+                    <h3 class="plan-name">プラン名2</h3>
+                    <p class="plan-detail-text">プラン名2詳細</p>
+                </div>
+                <button class="payment-btn">お支払いへ進む</button>
+            </div>
+            
+            <div style="height: 30px;"></div>
+        </main>
+    </div>
+
+    <nav class="bottom-nav" id="main-nav">
+        <a href="#" class="nav-item active" id="nav-field">
+            <i class="fa-solid fa-landmark"></i><span>フィールド</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-find">
+            <i class="fa-regular fa-compass"></i><span>みつける</span>
+        </a>
+        <div class="post-button-container">
+            <button class="post-btn" id="postBtn">
+                <i class="fa-solid fa-plus"></i><span class="post-label">投稿</span>
+            </button>
+        </div>
+        <a href="#" class="nav-item"><i class="fa-regular fa-handshake"></i><span>コミュニティ</span></a>
+        <a href="#" class="nav-item" id="nav-event">
+            <i class="fa-solid fa-person-running"></i><span>イベント</span>
+        </a>
+        <a href="#" class="nav-item"><i class="fa-regular fa-user"></i><span>マイページ</span></a>
+    </nav>
+
+    <div id="postFormContainer">
+        <div class="form-content">
+            <div class="form-header">
+                <h3>新規投稿</h3>
+                <div class="user-profile">
+                    <div class="avatar-circle"></div>
+                    <div class="user-info">
+                        <div class="user-name">投稿者名</div>
+                    </div>
+                </div>
+            </div>
+            
+            <textarea id="postText" placeholder="あなたの考えを共有しましょう..."></textarea>
+            
+            <input type="file" id="imageUploadInput" accept="image/*" class="hidden">
+            
+            <div class="post-image-area form-image-area" id="imageUploadArea">
+                <i class="fa-solid fa-camera" style="font-size: 2rem;"></i>
+                <span id="imageUploadText" style="font-size: 1rem;">タップして画像をアップロード</span>
+            </div>
+            
+            <div class="form-input-row hidden" id="locationInputRow">
+                <i class="fa-solid fa-location-dot input-icon"></i>
+                <input type="text" id="locationInput" placeholder="場所を入力">
+            </div>
+
+            <div class="form-input-row hidden" id="scheduleInputRow">
+                <i class="fa-regular fa-calendar-alt input-icon"></i>
+                <input type="datetime-local" id="scheduleInput">
+            </div>
+            
+            <div class="form-options">
+                <button class="action-pill" id="locationToggleBtn">
+                    <i class="fa-solid fa-location-dot"></i> 場所を追加
+                </button>
+                <button class="action-pill" id="scheduleToggleBtn">
+                    <i class="fa-regular fa-calendar-alt"></i> スケジュール設定
+                </button>
+            </div>
+
+            <div class="form-actions">
+                <button id="closeFormButton">閉じる</button>
+                <button id="submitPostButton">投稿</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
