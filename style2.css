@@ -1,0 +1,576 @@
+/* 基本リセット */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: "Helvetica Neue", Arial, sans-serif; }
+:root { --bg-dark: #1a1e2e; --text-white: #ffffff; --bg-grey: #e0e0e0; --accent-yellow: #f2c94c; --nav-height: 80px; }
+body { background-color: #f5f5f5; color: #333; min-height: 100vh; }
+.hidden { display: none !important; }
+
+/* ヘッダー共通 */
+.app-header { position: fixed; top: 0; left: 0; width: 100%; background-color: var(--bg-dark); color: var(--text-white); z-index: 1000; }
+.icon-btn { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+
+/* ホームのみつける */
+.header-find { height: 100px; padding-bottom: 10px; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; }
+.search-box { flex-grow: 1; margin: 0 15px; background-color: rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 5px 15px; display: flex; align-items: center; }
+.search-box input { background: none; border: none; color: white; width: 100%; outline: none; }
+.search-box input::placeholder { color: #ccc; }
+.search-box i { color: #ccc; margin-right: 8px; }
+.sub-header { padding: 5px 15px; display: flex; align-items: center; font-weight: bold; }
+.sub-header i { margin-right: 8px; }
+.main-find { padding-top: 100px; padding-bottom: var(--nav-height); }
+
+/* フィールド & イベントのヘッダー */
+.header-field { height: 60px; display: flex; align-items: center; padding: 0 15px; }
+.header-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; position: relative; }
+.logo-container { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; font-weight: 900; font-size: 1.3rem; letter-spacing: 1px; color: white; }
+.logo-container img { margin-right: 8px; display: block; }
+
+/* ホームのフィールド */
+.main-field {
+    padding-top: 100px; 
+    padding-bottom: var(--nav-height);
+    min-height: 100vh;
+    background-color: var(--bg-dark); 
+    color: white;
+}
+
+/* 投稿カードスタイル */
+.post-card {
+    padding: 15px;
+    background-color: var(--bg-dark);
+}
+
+.post-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 中央揃えに変更 */
+    margin-bottom: 15px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-info {
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+.user-name { font-weight: bold; }
+.post-date { font-size: 0.75rem; color: #ccc; }
+
+.follow-btn {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.post-menu-btn {
+    color: #ccc; 
+    font-size: 1.1rem;
+    padding: 0 5px; 
+}
+
+
+.post-image-area {
+    background-color: white;
+    width: 100%;
+    aspect-ratio: 2 / 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    overflow: hidden; 
+    position: relative;
+}
+
+.post-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+}
+
+/* 投稿本文に場所やスケジュールが表示されるエリア */
+.post-text-area {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+.post-text-area .meta-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #f2c94c; 
+    margin-bottom: 5px;
+}
+.post-text-area .meta-info i {
+    font-size: 1rem;
+}
+
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-pill {
+    background-color: #4f4f4f; 
+    color: #ccc;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+/* いいねボタンのアクティブスタイル */
+.action-pill.active-like {
+    background-color: #2196f3; 
+    color: white;
+}
+/* 応援ボタンのアクティブスタイル */
+.action-pill.active-cheer {
+    background-color: #ff9800; 
+    color: white;
+}
+
+
+.post-divider {
+    border-top: 1px solid #ffffff33; 
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* フィールド (タブ付きヘッダー)*/
+.header-field-tabs {
+    height: 100px; 
+    background-color: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+}
+
+.top-row {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    position: relative;
+    width: 100%;
+}
+
+.tab-row {
+    height: 40px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.tab-item {
+    flex: 1; 
+    text-align: center;
+    color: #888;
+    font-weight: bold;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.tab-item.active {
+    color: white;
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 40px;
+    height: 4px;
+    background-color: #c1e346; 
+    border-radius: 4px;
+}
+
+.notification-wrapper { position: relative; }
+.badge { position: absolute; top: 0px; right: 0px; background-color: #f2c94c; color: #333; font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 1px solid var(--bg-dark); }
+
+
+/* カテゴリ検索 */
+#view-category { background-color: #000; min-height: 100vh; color: white; }
+.header-category { height: 60px; display: flex; align-items: center; padding: 0 10px; background-color: #000; }
+.active-search { flex-grow: 1; margin-left: 10px; background-color: #444; }
+.main-category { padding-top: 60px; padding-bottom: var(--nav-height); padding-left: 15px; padding-right: 15px; }
+.category-title { font-size: 1rem; font-weight: bold; margin: 15px 0; }
+.cat-btn { width: 100%; background-color: #4f4f4f; color: white; border: none; padding: 12px 15px; margin-bottom: 2px; text-align: center; font-size: 1.2rem; position: relative; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+.cat-btn i { position: absolute; left: 15px; font-size: 0.9rem; }
+.sub-list { width: 100%; }
+.sub-item { background-color: #4f4f4f; color: white; padding: 12px 15px; text-align: center; font-size: 1.2rem; border-top: 1px solid #333; }
+
+/* 共通パーツ */
+.grey-box { background-color: var(--bg-grey); display: flex; justify-content: center; align-items: center; width: 100%; color: #000; font-size: 2rem; position: relative; overflow: hidden; }
+.account-box { height: 250px; }
+.ad-box { height: 150px; }
+.ad-container { border-top: 2px solid #333; }
+.section-title { background-color: #0f111a; color: white; padding: 10px 15px; font-weight: bold; }
+.placeholder-text { font-size: 1.5rem; }
+
+/* ナビゲーション */
+.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); background-color: var(--bg-dark); display: flex; justify-content: space-around; align-items: flex-start; padding-top: 10px; z-index: 2000; }
+.nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #888; font-size: 0.65rem; width: 16%; }
+.nav-item i { font-size: 1.3rem; margin-bottom: 5px; }
+.nav-item.active { color: white; }
+.post-button-container { width: 16%; display: flex; justify-content: center; position: relative; top: -20px; }
+.post-btn { background-color: var(--accent-yellow); border: none; border-radius: 50%; width: 55px; height: 55px; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer; }
+.post-btn i { font-size: 1.5rem; color: #333; }
+.post-label { position: absolute; bottom: -20px; font-size: 0.6rem; color: #888; white-space: nowrap; }
+
+/* イベント一覧画面のスタイル */
+.main-event {
+    padding-top: 100px; 
+    padding-bottom: var(--nav-height);
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.event-card {
+    background-color: var(--bg-dark);
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ffffff33;
+    padding-bottom: 15px;
+}
+
+.event-image-area {
+    background-color: white;
+    width: 100%;
+    aspect-ratio: 2 / 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.event-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+
+.progress-section { margin-bottom: 15px; position: relative; }
+.progress-label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #333; font-weight: bold; font-size: 0.9rem; z-index: 2; }
+.progress-bar-container { width: 100%; height: 24px; background-color: #d9d9d9; border-radius: 12px; overflow: hidden; position: relative; }
+.progress-bar-fill { height: 100%; background-color: var(--accent-yellow); border-radius: 12px 0 0 12px; }
+
+.event-footer { display: flex; justify-content: space-between; align-items: flex-end; }
+.event-stats { display: flex; gap: 20px; font-size: 0.8rem; color: #ccc; }
+.stat-item span { display: block; font-size: 1rem; color: white; font-weight: bold; margin-top: 2px; }
+.event-detail-link { color: white; text-decoration: none; font-size: 0.9rem; }
+
+/* イベント詳細画面 */
+.clickable-area { cursor: pointer; }
+
+.header-detail {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    background-color: var(--bg-dark);
+}
+.header-title { font-size: 1.1rem; font-weight: bold; }
+
+.main-detail {
+    padding-top: 60px;
+    padding-bottom: 20px;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.detail-profile-row { display: flex; align-items: center; margin-bottom: 20px; margin-top: 10px; }
+.avatar-circle.large { width: 50px; height: 50px; margin-right: 15px; }
+
+.detail-event-title { font-size: 1.4rem; margin-bottom: 5px; }
+.current-amount-label { font-size: 0.8rem; color: #ccc; }
+.amount-wrap { display: flex; align-items: baseline; gap: 15px; margin-bottom: 10px; }
+.current-amount { font-size: 1.6rem; font-weight: bold; }
+.target-amount { font-size: 0.9rem; color: #ccc; }
+
+.detail-stats-row { display: flex; gap: 30px; margin-bottom: 30px; }
+.detail-stat-item { font-size: 0.9rem; color: #ccc; }
+.detail-stat-item span { font-size: 1.2rem; color: white; font-weight: bold; display: block; margin-top: 5px; }
+
+.support-action-area { margin-bottom: 40px; }
+.support-btn {
+    width: 100%;
+    background-color: var(--accent-yellow);
+    color: #333;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.support-note { font-size: 0.7rem; color: white; text-align: center; line-height: 1.4; }
+.detail-description { text-align: center; margin-top: 20px; font-size: 1.1rem; color: #eee; }
+
+/* プラン選択画面 */
+.main-plan-select {
+    padding-top: 80px;
+    padding-bottom: 20px;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.plan-select-instruction {
+    margin: 20px 0;
+    font-size: 1rem;
+    color: white;
+}
+
+/* プランカード：白い枠線と角丸 */
+.plan-card {
+    border: 1px solid white; 
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: var(--bg-dark);
+}
+
+/* プラン画像エリア */
+.plan-image-area {
+    background-color: white;
+    width: 100%;
+    aspect-ratio: 2 / 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.plan-info {
+    margin-bottom: 15px;
+}
+
+.plan-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.plan-detail-text {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* お支払いボタン */
+.payment-btn {
+    width: 100%;
+    background-color: var(--accent-yellow);
+    color: #333;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+/* --- 投稿フォーム本体（モーダル）のスタイル --- */
+#postFormContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); 
+    z-index: 3000; 
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s;
+}
+
+.form-content {
+    background: white;
+    padding: 20px; 
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-height: 90vh; 
+    overflow-y: auto; 
+    color: #333; 
+}
+
+/* ヘッダーのレイアウト */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-header h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* プロフィール（再利用）*/
+.form-header .user-profile {
+    align-items: center;
+}
+
+.form-header .avatar-circle {
+    width: 30px;
+    height: 30px;
+}
+
+.form-header .user-name {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* 画像エリアの調整 */
+.form-image-area {
+    height: 100px; 
+    aspect-ratio: auto; 
+    border: 2px dashed #ccc;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+    position: relative; 
+}
+
+/* 画像プレビュー */
+.form-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.form-image-area .fa-camera,
+.form-image-area #imageUploadText {
+    position: relative;
+    z-index: 10; 
+}
+
+
+#postText {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    margin: 0 0 15px 0; 
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    resize: vertical; 
+}
+
+/* 場所とスケジュールの入力行 */
+.form-input-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-input-row .input-icon {
+    color: #6c757d;
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+.form-input-row input {
+    flex-grow: 1;
+    padding: 8px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #333;
+    background: none;
+}
+
+/* その他のオプションボタン */
+.form-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; 
+}
+
+.form-options .action-pill {
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+.form-options .action-pill.active {
+    background-color: var(--accent-yellow);
+    color: var(--bg-dark);
+}
+
+
+/* アクションボタン */
+.form-actions {
+    text-align: right;
+}
+
+.form-actions button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+#submitPostButton {
+    background-color: var(--accent-yellow); 
+    color: var(--bg-dark);
+}
+
+#closeFormButton {
+    background-color: #6c757d; 
+    color: white; 
+}
