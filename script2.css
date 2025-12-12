@@ -1,0 +1,583 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // 画面要素
+    const viewFind = document.getElementById('view-find');
+    const viewField = document.getElementById('view-field');
+    const viewCategory = document.getElementById('view-category');
+    const viewEvent = document.getElementById('view-event');
+    const viewEventDetail = document.getElementById('view-event-detail');
+    const viewPlanSelect = document.getElementById('view-plan-select');
+    const allViews = document.querySelectorAll('.view-container'); 
+
+    // ナビゲーション
+    const navFind = document.getElementById('nav-find');
+    const navField = document.getElementById('nav-field');
+    const navEvent = document.getElementById('nav-event');
+    const navItems = document.querySelectorAll('.nav-item');
+    const mainNav = document.getElementById('main-nav'); 
+
+    // トリガー要素
+    const triggerSearch = document.getElementById('trigger-search');
+    const backToFindBtn = document.getElementById('back-to-find');
+    const triggerEventDetail = document.getElementById('trigger-event-detail');
+    const btnBackFromDetail = document.getElementById('btn-back-from-detail');
+    const btnSupportEvent = document.getElementById('btn-support-event');
+    const btnBackFromPlan = document.getElementById('btn-back-from-plan');
+    
+    // 投稿フォーム要素
+    const postButton = document.getElementById('postBtn'); 
+    const postFormContainer = document.getElementById('postFormContainer'); 
+    const closeFormButton = document.getElementById('closeFormButton');
+    const submitPostButton = document.getElementById('submitPostButton');
+    const postTextarea = document.getElementById('postText');
+    const dynamicPostContainer = document.getElementById('dynamicPostContainer'); 
+
+    // --- 投稿フォーム内の要素 ---
+    const imageUploadInput = document.getElementById('imageUploadInput');
+    const imageUploadArea = document.getElementById('imageUploadArea');
+    const imageUploadText = document.getElementById('imageUploadText');
+    const locationToggleBtn = document.getElementById('locationToggleBtn');
+    const locationInputRow = document.getElementById('locationInputRow');
+    const locationInput = document.getElementById('locationInput');
+    const scheduleToggleBtn = document.getElementById('scheduleToggleBtn');
+    const scheduleInputRow = document.getElementById('scheduleInputRow');
+    const scheduleInput = document.getElementById('scheduleInput');
+
+    // データ保持用
+    let uploadedImageBase64 = null; 
+    const postStates = {}; 
+    let postIdCounter = 0; 
+
+    // LocalStorage制御
+    const STORAGE_KEY = 'goatusPosts';
+
+    function savePosts() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(postStates));
+    }
+
+    function loadPosts() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            Object.assign(postStates, JSON.parse(saved));
+            // 最大のpostIdCounterを更新
+            Object.keys(postStates).forEach(key => {
+                if (key.startsWith('dynamic-')) {
+                    const idNum = parseInt(key.split('-')[1]);
+                    if (idNum >= postIdCounter) {
+                        postIdCounter = idNum + 1;
+                    }
+                }
+            });
+        }
+    }
+
+    // カテゴリ展開要素 (省略)
+    const categoryButtons = [
+        { btn: document.getElementById('btn-a-o'), list: document.getElementById('list-a-o') },
+        { btn: document.getElementById('btn-ka-ko'), list: document.getElementById('list-ka-ko') },
+        // ...
+    ];
+    
+    // --- 投稿カードの操作ロジック ---
+
+    function handleLike(postId, button) {
+        if (!postStates[postId].liked) {
+            postStates[postId].likes++;
+            postStates[postId].liked = true;
+            button.classList.add('active-like');
+            button.querySelector('.like-count').textContent = postStates[postId].likes;
+            savePosts(); // ★データ更新後に保存
+        }
+    }
+
+    function handleCheer(postId, button) {
+        const cheerAmount = 100;
+        const confirmCheer = confirm(`${cheerAmount}円を送金してこの投稿を応援しますか？`);
+
+        if (confirmCheer) {
+            postStates[postId].cheers++;
+            postStates[postId].cheerAmount += cheerAmount;
+            
+            button.querySelector('.cheer-count').textContent = postStates[postId].cheers;
+            button.classList.add('active-cheer'); 
+            
+            savePosts(); // ★データ更新後に保存
+            alert('応援しました！送金処理が完了しました。（見かけ上の機能です）');
+            
+            setTimeout(() => {
+                button.classList.remove('active-cheer');
+            }, 500); 
+        }
+    }
+
+    function setupPostActions(postCard, postId) {
+        const likeButton = postCard.querySelector('.like-btn');
+        const cheerButton = postCard.querySelector('.cheer-btn');
+
+        if (likeButton) {
+            likeButton.addEventListener('click', () => {
+                handleLike(postId, likeButton);
+            });
+            if (postStates[postId] && postStates[postId].liked) {
+                likeButton.classList.add('active-like');
+            }
+        }
+
+        if (cheerButton) {
+            cheerButton.addEventListener('click', () => {
+                handleCheer(postId, cheerButton);
+            });
+        }
+    }
+    
+    // --- 編集・削除機能 ---
+    
+    /**
+     * 投稿メニューボタンのリスナーを設定 (編集/削除)
+     */
+    function setupPostMenu(postCard, postId) {
+        const menuButton = postCard.querySelector('.post-menu-btn');
+        if (menuButton) {
+            // 静的投稿は編集・削除不可とする（任意）
+            if (postId === 'static-1') return;
+
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const action = prompt(`投稿ID: ${postId}\n実行するアクションを選択してください:\n1. 編集\n2. 削除`);
+                
+                if (action === '1') {
+                    startEditPost(postId);
+                } else if (action === '2') {
+                    deletePost(postId);
+                }
+            });
+        }
+    }
+
+    /**
+     * 投稿編集モードを開始し、フォームに内容をロードする
+     */
+    function startEditPost(postId) {
+        const post = postStates[postId];
+        if (!post) return;
+
+        postTextarea.value = post.content;
+        
+        // 場所のロード
+        if (post.location) {
+            locationInputRow.classList.remove('hidden');
+            locationToggleBtn.classList.add('active');
+            locationInput.value = post.location;
+        } else {
+            // フォームを閉じた時のリセット処理を再実行
+        }
+        
+        // スケジュールのロード
+        if (post.schedule) {
+            scheduleInputRow.classList.remove('hidden');
+            scheduleToggleBtn.classList.add('active');
+            // scheduleInputには 'YYYY-MM-DDTHH:MM' 形式が必要
+            const date = new Date(post.schedule);
+            const y = date.getFullYear();
+            const m = (date.getMonth() + 1).toString().padStart(2, '0');
+            const d = date.getDate().toString().padStart(2, '0');
+            const h = date.getHours().toString().padStart(2, '0');
+            const min = date.getMinutes().toString().padStart(2, '0');
+            scheduleInput.value = `${y}-${m}-${d}T${h}:${min}`;
+        } else {
+            // フォームを閉じた時のリセット処理を再実行
+        }
+        
+        // 画像のロード
+        uploadedImageBase64 = post.imageBase64;
+        if (uploadedImageBase64) {
+            imageUploadArea.style.backgroundImage = `url('${uploadedImageBase64}')`;
+            imageUploadArea.style.backgroundSize = 'cover';
+            imageUploadArea.style.backgroundPosition = 'center';
+            imageUploadArea.querySelector('.fa-camera').style.display = 'none';
+            imageUploadText.textContent = '画像が設定されています';
+        }
+
+        openForm();
+        submitPostButton.textContent = '更新';
+        submitPostButton.dataset.editPostId = postId;
+    }
+    
+    /**
+     * 投稿を削除する
+     */
+    function deletePost(postId) {
+        if (!confirm('この投稿を本当に削除しますか？')) return;
+
+        const postCard = document.querySelector(`[data-post-id="${postId}"]`);
+        if (postCard) {
+            const nextElement = postCard.nextElementSibling;
+            if (nextElement && nextElement.classList.contains('post-divider')) {
+                nextElement.remove(); // 区切り線も削除
+            }
+            postCard.remove();
+        }
+        
+        delete postStates[postId];
+        savePosts();
+        alert('投稿を削除しました。');
+    }
+
+    // --- 画面・フォーム操作ロジック ---
+
+    function switchTab(targetTab) {
+        navItems.forEach(item => item.classList.remove('active'));
+        allViews.forEach(view => view.classList.add('hidden'));
+        if(mainNav) mainNav.classList.remove('hidden');
+
+        if (targetTab === 'find') {
+            viewFind.classList.remove('hidden');
+            if (navFind) navFind.classList.add('active');
+        } else if (targetTab === 'field') {
+            viewField.classList.remove('hidden');
+            if (navField) navField.classList.add('active');
+        } else if (targetTab === 'event') {
+            viewEvent.classList.remove('hidden');
+            if (navEvent) navEvent.classList.add('active');
+        }
+    }
+
+    function closeForm() {
+        if (postFormContainer) {
+            postFormContainer.style.display = 'none';
+            // フォームの内容をリセット
+            postTextarea.value = ''; 
+            locationInput.value = '';
+            scheduleInput.value = '';
+            uploadedImageBase64 = null; 
+            
+            // UIを初期状態に戻す
+            imageUploadArea.style.backgroundImage = 'none';
+            imageUploadArea.querySelector('.fa-camera').style.display = 'block';
+            imageUploadText.textContent = 'タップして画像をアップロード';
+
+            locationInputRow.classList.add('hidden');
+            locationToggleBtn.classList.remove('active');
+            
+            scheduleInputRow.classList.add('hidden');
+            scheduleToggleBtn.classList.remove('active');
+
+            // 編集モードを解除
+            submitPostButton.textContent = '投稿';
+            delete submitPostButton.dataset.editPostId;
+        }
+    }
+
+    function openForm() {
+        if (postFormContainer) {
+            postFormContainer.style.display = 'flex';
+        }
+    }
+    
+    // --- 投稿カードのHTML生成 ---
+    
+    function createPostCardHTML(postId, post) {
+        const { content, timeString, location, schedule, imageBase64, likes, liked, cheers } = post;
+        
+        let imageElement = '';
+        if (imageBase64) {
+            imageElement = `
+                <div class="post-image-area">
+                    <img src="${imageBase64}" alt="投稿画像">
+                </div>
+            `;
+        }
+        
+        let metaInfo = '';
+        if (location || schedule) {
+            metaInfo = `
+                <div class="meta-info">
+                    ${location ? `<i class="fa-solid fa-location-dot"></i> ${location}` : ''}
+                    ${schedule ? `<i class="fa-regular fa-calendar-alt"></i> ${schedule}` : ''}
+                </div>
+            `;
+        }
+
+        const likeActive = liked ? 'active-like' : '';
+
+        return `
+            <div class="post-card" data-post-id="${postId}">
+                <div class="post-header-row">
+                    <div class="user-profile">
+                        <div class="avatar-circle"></div>
+                        <div class="user-info">
+                            <div class="user-name">${post.userName || 'ゲストユーザー'}</div>
+                            <div class="post-date">${timeString}</div>
+                        </div>
+                    </div>
+                    <button class="icon-btn post-menu-btn" data-post-id="${postId}"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                </div>
+
+                ${imageElement}
+
+                <div class="post-text-area">
+                    ${metaInfo}
+                    <p>${content}</p>
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-pill like-btn ${likeActive}" data-post-id="${postId}">
+                        <i class="fa-regular fa-thumbs-up"></i> <span class="like-count">${likes}</span>
+                    </button>
+                    <button class="action-pill cheer-btn" data-post-id="${postId}">
+                        <i class="fa-solid fa-bullhorn"></i> <span class="cheer-count">${cheers}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="post-divider"></div>
+        `;
+    }
+
+    /**
+     * 新規投稿を作成するロジック
+     */
+    function createPost() {
+        const content = postTextarea.value.trim();
+        if (content === '' && !uploadedImageBase64 && locationInput.value.trim() === '' && scheduleInput.value === '') {
+            alert('投稿内容、画像、場所、またはスケジュールを入力/設定してください。');
+            return;
+        }
+
+        const newPostId = `dynamic-${++postIdCounter}`;
+        
+        // postStatesに新しいデータを保存
+        postStates[newPostId] = { 
+            content: content, 
+            timeString: new Date().toLocaleString(), 
+            location: locationInput.value.trim(), 
+            schedule: scheduleInput.value ? new Date(scheduleInput.value).toLocaleString() : '', 
+            imageBase64: uploadedImageBase64,
+            likes: 0, 
+            liked: false, 
+            cheers: 0, 
+            cheerAmount: 0,
+            userName: 'ゲストユーザー'
+        };
+
+        // HTMLを生成し挿入
+        const newPostCardHTML = createPostCardHTML(newPostId, postStates[newPostId]);
+        dynamicPostContainer.insertAdjacentHTML('afterbegin', newPostCardHTML);
+
+        // イベントリスナーを設定
+        const newPostCardElement = dynamicPostContainer.querySelector(`[data-post-id="${newPostId}"]`);
+        if (newPostCardElement) {
+            setupPostActions(newPostCardElement, newPostId);
+            setupPostMenu(newPostCardElement, newPostId);
+        }
+
+        savePosts(); 
+        closeForm();
+        switchTab('field');
+    }
+
+    /**
+     * 既存の投稿を更新するロジック
+     */
+    function updatePost(postId) {
+        const content = postTextarea.value.trim();
+        if (content === '' && !uploadedImageBase64 && locationInput.value.trim() === '' && scheduleInput.value === '') {
+            alert('投稿内容、画像、場所、またはスケジュールを入力/設定してください。');
+            return;
+        }
+
+        // 1. postStatesのデータを更新
+        postStates[postId] = { 
+            ...postStates[postId],
+            content: content, 
+            timeString: new Date().toLocaleString() + ' (更新済)',
+            location: locationInput.value.trim(), 
+            schedule: scheduleInput.value ? new Date(scheduleInput.value).toLocaleString() : '', 
+            imageBase64: uploadedImageBase64,
+        };
+
+        // 2. DOMを再描画（古いカードを新しいHTMLで置き換える）
+        const oldPostCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
+        if (oldPostCard) {
+            const newPostCardHTML = createPostCardHTML(postId, postStates[postId]);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = newPostCardHTML;
+            const newPostCard = tempDiv.firstElementChild;
+
+            // 古いカードを置き換え
+            oldPostCard.parentNode.replaceChild(newPostCard, oldPostCard);
+
+            // 新しいカードにイベントリスナーを設定
+            setupPostActions(newPostCard, postId);
+            setupPostMenu(newPostCard, postId);
+        }
+
+        // 3. LocalStorageを更新
+        savePosts(); 
+        closeForm();
+        alert('投稿を更新しました。');
+    }
+
+    // --- イベントリスナー設定 ---
+    
+    // ナビゲーション
+    if (navFind) navFind.addEventListener('click', (e) => { e.preventDefault(); switchTab('find'); });
+    if (navField) navField.addEventListener('click', (e) => { e.preventDefault(); switchTab('field'); });
+    if (navEvent) navEvent.addEventListener('click', (e) => { e.preventDefault(); switchTab('event'); });
+
+    // 画面遷移
+    if (triggerSearch) triggerSearch.addEventListener('click', () => { if (viewFind) viewFind.classList.add('hidden'); if (viewCategory) viewCategory.classList.remove('hidden'); });
+    if (backToFindBtn) backToFindBtn.addEventListener('click', () => { if (viewCategory) viewCategory.classList.add('hidden'); if (viewFind) viewFind.classList.remove('hidden'); });
+    if (triggerEventDetail) { triggerEventDetail.addEventListener('click', () => { if (viewEvent) viewEvent.classList.add('hidden'); if (viewEventDetail) viewEventDetail.classList.remove('hidden'); if(mainNav) mainNav.classList.add('hidden'); window.scrollTo(0, 0); });}
+    if (btnBackFromDetail) { btnBackFromDetail.addEventListener('click', () => { if (viewEventDetail) viewEventDetail.classList.add('hidden'); if (viewEvent) viewEvent.classList.remove('hidden'); if(mainNav) mainNav.classList.remove('hidden'); });}
+    if (btnSupportEvent) { btnSupportEvent.addEventListener('click', () => { if (viewEventDetail) viewEventDetail.classList.add('hidden'); if (viewPlanSelect) viewPlanSelect.classList.remove('hidden'); window.scrollTo(0, 0); });}
+    if (btnBackFromPlan) { btnBackFromPlan.addEventListener('click', () => { if (viewPlanSelect) viewPlanSelect.classList.add('hidden'); if (viewEventDetail) viewEventDetail.classList.remove('hidden'); });}
+    
+    // 投稿フォームの表示/非表示
+    if (postButton) postButton.addEventListener('click', openForm);
+    if (closeFormButton) closeFormButton.addEventListener('click', closeForm);
+    if (postFormContainer) {
+        postFormContainer.addEventListener('click', (event) => {
+            if (event.target === postFormContainer) {
+                closeForm();
+            }
+        });
+    }
+
+    // 投稿/更新ロジックの統合
+    if (submitPostButton && postTextarea && dynamicPostContainer) { 
+        submitPostButton.addEventListener('click', () => {
+            const postId = submitPostButton.dataset.editPostId;
+            
+            if (postId) {
+                updatePost(postId);
+            } else {
+                createPost();
+            }
+        });
+    }
+
+    // 画像アップロード
+    if (imageUploadArea && imageUploadInput) {
+        imageUploadArea.addEventListener('click', () => { imageUploadInput.click(); });
+        imageUploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImageBase64 = e.target.result; 
+                    imageUploadArea.style.backgroundImage = `url('${uploadedImageBase64}')`;
+                    imageUploadArea.style.backgroundSize = 'cover';
+                    imageUploadArea.style.backgroundPosition = 'center';
+                    imageUploadArea.querySelector('.fa-camera').style.display = 'none';
+                    imageUploadText.textContent = file.name.substring(0, 30) + '...';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // 場所の表示/非表示トグル
+    if (locationToggleBtn && locationInputRow) {
+        locationToggleBtn.addEventListener('click', () => {
+            const isActive = locationInputRow.classList.toggle('hidden');
+            locationToggleBtn.classList.toggle('active', !isActive);
+            if(isActive) { locationInput.value = ''; }
+        });
+    }
+    
+    // スケジュールの表示/非表示トグル
+    if (scheduleToggleBtn && scheduleInputRow) {
+        scheduleToggleBtn.addEventListener('click', () => {
+            const isActive = scheduleInputRow.classList.toggle('hidden');
+            scheduleToggleBtn.classList.toggle('active', !isActive);
+            if(isActive) { scheduleInput.value = ''; }
+        });
+    }
+
+    // カテゴリ開閉
+    categoryButtons.forEach(({ btn, list }) => {
+        if (btn && list) {
+            const icon = btn.querySelector('i');
+            btn.addEventListener('click', () => {
+                const isHidden = list.classList.toggle('hidden');
+                if (icon) {
+                    icon.classList.toggle('fa-chevron-down', isHidden);
+                    icon.classList.toggle('fa-chevron-up', !isHidden);
+                }
+            });
+        }
+    });
+
+    
+    // --- 初期化処理 ---
+    
+    /**
+     * 既存の静的投稿カードの初期化と、LocalStorageからの動的投稿の再構築を統合
+     */
+    function initializePosts() {
+        loadPosts(); // ★Local Storageからデータを読み込む
+
+        // 1. 静的投稿の処理 (HTMLに静的に存在する投稿)
+        const staticCard = document.querySelector('.post-card[data-post-id="static-1"]');
+        if (staticCard) {
+            const staticPostId = staticCard.dataset.postId;
+            if (!postStates[staticPostId]) {
+                // postStatesに静的投稿の初期値を設定
+                postStates[staticPostId] = { 
+                    content: '文章', timeString: 'n日前', location: '', 
+                    schedule: '', imageBase64: null, likes: 0, liked: false, 
+                    cheers: 0, cheerAmount: 0, userName: '団体名<br>個人名'
+                };
+            }
+            setupPostActions(staticCard, staticPostId);
+            setupPostMenu(staticCard, staticPostId);
+        }
+        
+        // 2. 動的投稿の再構築 (LocalStorageから読み込んだ投稿)
+        // dynamic-IDを降順でソートして挿入（最新の投稿が上に来るように）
+        const dynamicPostIds = Object.keys(postStates).filter(id => id.startsWith('dynamic-')).sort((a, b) => {
+            return parseInt(b.split('-')[1]) - parseInt(a.split('-')[1]);
+        });
+
+        dynamicPostIds.forEach(postId => {
+            const post = postStates[postId];
+            const newPostCardHTML = createPostCardHTML(postId, post);
+            
+            dynamicPostContainer.insertAdjacentHTML('afterbegin', newPostCardHTML);
+            
+            const newPostCardElement = dynamicPostContainer.querySelector(`[data-post-id="${postId}"]`);
+            if (newPostCardElement) {
+                setupPostActions(newPostCardElement, postId);
+                setupPostMenu(newPostCardElement, postId);
+            }
+        });
+
+    }
+
+    // フィールド画面のタブ設定
+    setupTabs('tab-recommend', 'tab-following');
+    // イベント画面のタブ設定
+    setupTabs('tab-event-recommend', 'tab-event-following');
+
+    initializePosts();
+    
+    // 初期表示として、'view-field' をアクティブな状態にする
+    switchTab('field'); 
+
+    // タブ切り替え関数 (再定義)
+    function setupTabs(activeTabId, inactiveTabId) {
+        const activeTab = document.getElementById(activeTabId);
+        const inactiveTab = document.getElementById(inactiveTabId);
+
+        if (activeTab && inactiveTab) {
+            activeTab.addEventListener('click', () => {
+                activeTab.classList.add('active');
+                inactiveTab.classList.remove('active');
+            });
+
+            inactiveTab.addEventListener('click', () => {
+                inactiveTab.classList.add('active');
+                activeTab.classList.remove('active');
+            });
+        }
+    }
+});
