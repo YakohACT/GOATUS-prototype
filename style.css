@@ -375,3 +375,11 @@ body { background-color: #f5f5f5; color: #333; min-height: 100vh; }
     cursor: pointer;
     border-radius: 4px;
 }
+/* 詳細説明文の本文スタイル */
+.description-body {
+    text-align: left;  
+    margin-top: 15px; 
+    line-height: 1.6;  
+    font-size: 1rem;   
+    color: #eee;       
+}
